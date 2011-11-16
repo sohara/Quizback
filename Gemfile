@@ -37,6 +37,7 @@ group :development, :test do
   gem "rspec-rails", "~> 2.6.1"
   gem "ruby-debug19"
   gem "sham_rack"
+  gem "jasminerice"
 end
 
 group :test do
