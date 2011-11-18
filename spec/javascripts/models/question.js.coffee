@@ -31,4 +31,4 @@ describe "QuestionsCollection", ->
     questions = new Quizback.Collections.QuestionsCollection
     questions.add data for data in jsonData
     expect(questions.length).toEqual(2)
-    expect(questions.models[0].get('text')).toEqual("Are you trustworthy?")
+    expect(questions.first().get('text')).toEqual("Are you trustworthy?")
