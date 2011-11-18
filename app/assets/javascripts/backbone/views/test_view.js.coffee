@@ -9,7 +9,21 @@ class Quizback.Views.TestView extends Backbone.View
       #{id: 3, text: "Question 3"},
       #{id: 4, text: "Question 4"}
     #]
+
+    # Load all the questions from json objext embedded in page
     @questions = new Quizback.Collections.QuestionsCollection(window.questions)
+
+    # Instantiate an empty answers collection to which answers 
+    # will be added as they are created
+    @answers = new Quizback.Collections.AnswersCollection
+
+    # Bind the the answers collection 'add' event so that we can 
+    # call the function to append to the answers collection view
+    @answers.bind('add', @appendAnswer)
+
+    # Assign the element for the list of answers to a variable for easy reference
+    @answers_tag = $("ul")
+    
     @current_question = @questions.at(@current_index)
     @render()
 
@@ -19,13 +33,22 @@ class Quizback.Views.TestView extends Backbone.View
   render: =>
     @displayQuestion @current_question
     #@el.append("<h3>Question number #{@current_question}</h3>")
-    @el.append(@allButtons)
+    $("#buttons").append(@allButtons)
 
   createAnswer: (e) ->
+    value = $(e.currentTarget).val()
+    answer = new Quizback.Models.Answer
+    answer.set({value: value, question_id: @current_question.get('id')})
+    @answers.add(answer)
     @current_index++
     @current_question = @questions.at(@current_index)
     @displayQuestion @current_question
-    @el.append("<p>Answer #{@current_index} created with value #{$(e.currentTarget).val()}")
+    #@el.append("<p>Answer #{@current_index} created with value #{value}")
+
+  appendAnswer: (answer) =>
+    answer_view = new Quizback.Views.AnswerView( {model: answer} )
+    @answers_tag.append(answer_view.render().el)
+
 
   displayQuestion: (question) =>
     question_view = new Quizback.Views.QuestionView( {model: question} )
