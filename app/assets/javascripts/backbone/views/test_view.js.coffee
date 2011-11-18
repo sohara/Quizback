@@ -39,6 +39,7 @@ class Quizback.Views.TestView extends Backbone.View
     value = $(e.currentTarget).val()
     answer = new Quizback.Models.Answer
     answer.set({value: value, question_id: @current_question.get('id')})
+    answer.save()
     @answers.add(answer)
     @current_index++
     @current_question = @questions.at(@current_index)
