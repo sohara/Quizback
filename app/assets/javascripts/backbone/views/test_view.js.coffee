@@ -41,7 +41,6 @@ class Quizback.Views.TestView extends Backbone.View
     $("#buttons").append(@allButtons)
 
   createAnswer: (e) ->
-    console.log "In createAnswer function."
     value = $(e.currentTarget).val()
     answer = new Quizback.Models.Answer
     answer.bind "error", @raiseError
@@ -64,7 +63,7 @@ class Quizback.Views.TestView extends Backbone.View
     console.log "in next question function"
     @current_index++
     @current_question = @questions.at(@current_index)
-    @displayQuestion @current_question
+    @displayQuestion()
 
   appendAnswer: (answer) =>
     answer_view = new Quizback.Views.AnswerView( {model: answer} )
@@ -74,8 +73,8 @@ class Quizback.Views.TestView extends Backbone.View
     console.log("The following error: #{error} occurred on the following model: #{model}")
     console.log error
 
-  displayQuestion: (question) =>
-    question_view = new Quizback.Views.QuestionView( {model: question} )
+  displayQuestion: =>
+    question_view = new Quizback.Views.QuestionView( {model: @current_question} )
     $('div#question').html(question_view.render().el).hide(0).fadeIn('slow')
 
   allButtons: ->
@@ -87,4 +86,4 @@ class Quizback.Views.TestView extends Backbone.View
     return string
 
 $ ->
-  test_view = new Quizback.Views.TestView()
+  window.test_view = new Quizback.Views.TestView()
