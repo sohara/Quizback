@@ -18,7 +18,6 @@ describe "TestSession", ->
 
   it "adds a answer to its answer collection when given an object with a value and a question_id", ->
     test_session = new Quizback.Models.TestSession({id: 5789})
-    expect(test_session.answers.size()).toEqual(0)
     test_session.addAnswer({value: 3, question_id: 11})
     expect(test_session.answers.size()).toEqual(1)
     expect(test_session.answers.first().attributes).toEqual({
@@ -27,3 +26,9 @@ describe "TestSession", ->
       test_session_id:5789
     })
 
+  it "does not allow adding an answer for a question that already exists in the answers collection", ->
+    test_session = new Quizback.Models.TestSession({id: 5789})
+    test_session.addAnswer({value: 3, question_id: 11})
+    expect(test_session.answers.size()).toEqual(1)
+    test_session.addAnswer({value: 4, question_id: 11})
+    expect(test_session.answers.size()).toEqual(1)
