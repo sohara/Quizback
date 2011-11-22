@@ -3,19 +3,9 @@ class Quizback.Views.TestSessionView extends Backbone.View
 
   initialize: ->
     @current_index = 0
-    #jsonData = [
-      #{id: 1, text: "Question 1"},
-      #{id: 2, text: "Question 2"},
-      #{id: 3, text: "Question 3"},
-      #{id: 4, text: "Question 4"}
-    #]
 
     # Load all the questions from json objext embedded in page
     @questions = new Quizback.Collections.QuestionsCollection(window.questions)
-
-    # Instantiate an empty answers collection to which answers 
-    # will be added as they are created
-    #@answers = new Quizback.Collections.AnswersCollection
 
     # Bind the the answers collection 'add' event so that we can 
     # call the function to append to the answers collection view
@@ -45,22 +35,15 @@ class Quizback.Views.TestSessionView extends Backbone.View
     answer = new Quizback.Models.Answer
     answer.bind "error", @raiseError
     answer.set({value: value, question_id: @current_question.get('id'), test_session_id: @test_session_id})
-    #answer.save()
     answer.save null,
       success: (model, response) ->
         console.log "Successfuly saved #{model.constructor.name}"
-        console.log model
-        console.log response
       error: (model, response) ->
         console.log "Error while saving #{model.constructor.name}"
-        console.log model
-        console.log response
     @model.answers.add(answer)
     @nextQuestion() if @current_index < 19
-    #@el.append("<p>Answer #{@current_index} created with value #{value}")
 
   nextQuestion: =>
-    console.log "in next question function"
     @current_index++
     @current_question = @questions.at(@current_index)
     @displayQuestion()
