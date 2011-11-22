@@ -1,4 +1,4 @@
-class Quizback.Views.TestView extends Backbone.View
+class Quizback.Views.TestSessionView extends Backbone.View
   el: $('div#test')
 
   initialize: ->
@@ -15,11 +15,11 @@ class Quizback.Views.TestView extends Backbone.View
 
     # Instantiate an empty answers collection to which answers 
     # will be added as they are created
-    @answers = new Quizback.Collections.AnswersCollection
+    #@answers = new Quizback.Collections.AnswersCollection
 
     # Bind the the answers collection 'add' event so that we can 
     # call the function to append to the answers collection view
-    @answers.bind('add', @appendAnswer)
+    @model.answers.bind('add', @appendAnswer)
 
     # Assign the element for the list of answers to a variable for easy reference
     @answers_tag = $("ul")
@@ -55,7 +55,7 @@ class Quizback.Views.TestView extends Backbone.View
         console.log "Error while saving #{model.constructor.name}"
         console.log model
         console.log response
-    @answers.add(answer)
+    @model.answers.add(answer)
     @nextQuestion() if @current_index < 19
     #@el.append("<p>Answer #{@current_index} created with value #{value}")
 
@@ -86,4 +86,5 @@ class Quizback.Views.TestView extends Backbone.View
     return string
 
 $ ->
-  window.test_view = new Quizback.Views.TestView()
+  window.test_session = new Quizback.Models.TestSession()
+  window.test_view = new Quizback.Views.TestSessionView( {model: window.test_session})

@@ -1,7 +1,6 @@
 class Quizback.Models.TestSession extends Backbone.Model
 
-  paramRoot: 'test_session'
+  initialize: ->
+    @answers = new Quizback.Collections.AnswersCollection
 
-class Quizback.Collections.TestSessionsCollection extends Backbone.Collection
-  model: Quizback.Models.TestSession
-  url: '/test_sessions'
+  paramRoot: 'test_session'
