@@ -25,7 +25,7 @@ class Quizback.Models.TestSession extends Backbone.Model
       @answers.add(answer)
 
   hasAnswer: (attrs) ->
-    _.clone(@answers).any((answer) ->
+    @answers.any((answer) ->
       answer.get('question_id') == attrs.question_id)
 
   paramRoot: 'test_session'
