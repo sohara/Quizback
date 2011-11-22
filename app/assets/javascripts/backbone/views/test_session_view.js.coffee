@@ -14,9 +14,10 @@ class Quizback.Views.TestSessionView extends Backbone.View
     # Assign the element for the list of answers to a variable for easy reference
     @answers_tag = $("ul")
 
-    # Assign test_session_id to a variable. In real app this will be
-    # obtained from a url param or something like that
-    @test_session_id = 454
+    # Assign test_session_id to a model variable.
+    # This is obtained from the last section of the url path
+    # (undersore.js is employed for it's 'last' function on arrays
+    @model.id = parseInt(_(window.location.pathname.split('/')).last())
     
     @current_question = @questions.at(@current_index)
     @render()
@@ -31,10 +32,10 @@ class Quizback.Views.TestSessionView extends Backbone.View
     $("#buttons").append(@allButtons)
 
   createAnswer: (e) ->
-    value = $(e.currentTarget).val()
+    value = parseInt($(e.currentTarget).val())
     answer = new Quizback.Models.Answer
     answer.bind "error", @raiseError
-    answer.set({value: value, question_id: @current_question.get('id'), test_session_id: @test_session_id})
+    answer.set({value: value, question_id: @current_question.get('id'), test_session_id: @model.id})
     answer.save null,
       success: (model, response) ->
         console.log "Successfuly saved #{model.constructor.name}"
