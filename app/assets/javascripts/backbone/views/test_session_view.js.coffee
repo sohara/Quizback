@@ -5,7 +5,7 @@ class Quizback.Views.TestSessionView extends Backbone.View
     @current_index = 0
 
     # Load all the questions from json objext embedded in page
-    @questions = new Quizback.Collections.QuestionsCollection(window.questions)
+    #@questions = new Quizback.Collections.QuestionsCollection(window.questions)
 
     # Bind the the answers collection 'add' event so that we can 
     # call the function to append to the answers collection view
@@ -19,7 +19,7 @@ class Quizback.Views.TestSessionView extends Backbone.View
     # (undersore.js is employed for it's 'last' function on arrays
     @model.id = parseInt(_(window.location.pathname.split('/')).last())
     
-    @current_question = @questions.at(@current_index)
+    @current_question = @model.questions.at(@current_index)
     @render()
 
   events: ->
@@ -33,20 +33,12 @@ class Quizback.Views.TestSessionView extends Backbone.View
 
   createAnswer: (e) ->
     value = parseInt($(e.currentTarget).val())
-    answer = new Quizback.Models.Answer
-    answer.bind "error", @raiseError
-    answer.set({value: value, question_id: @current_question.get('id'), test_session_id: @model.id})
-    answer.save null,
-      success: (model, response) ->
-        console.log "Successfuly saved #{model.constructor.name}"
-      error: (model, response) ->
-        console.log "Error while saving #{model.constructor.name}"
-    @model.answers.add(answer)
+    test_session.addAnswer({value: value, question_id: @current_question.get('id')})
     @nextQuestion() if @current_index < 19
 
   nextQuestion: =>
     @current_index++
-    @current_question = @questions.at(@current_index)
+    @current_question = @model.questions.at(@current_index)
     @displayQuestion()
 
   appendAnswer: (answer) =>

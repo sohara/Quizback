@@ -26,7 +26,7 @@ describe "Answer", ->
 
   it "requires a test_session_id attribute", ->
     @answer.bind("error", @eventSpy)
-    @answer.set({value: "2", question_id: "5"})
+    @answer.set({value: "2", question_id: "5", test_session_id: null})
     expect(@eventSpy).toHaveBeenCalledOnce()
     expect(@eventSpy).toHaveBeenCalledWith(
       @answer,
